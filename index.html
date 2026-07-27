@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이교준 — Offensive Security Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#12181f;
+    --line:#222c37;
+    --text:#d7dde5;
+    --muted:#8592a3;
+    --dim:#5c6773;
+    --accent:#5ac8a8;      /* muted mint - 터미널 프롬프트 느낌, 클리셰 회피 */
+    --accent-soft:rgba(90,200,168,0.12);
+    --crit:#e06c75;         /* critical 표시용 */
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --sans:'Inter',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:var(--sans);line-height:1.65;
+    font-size:15px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+  /* ---- header ---- */
+  header{padding:80px 0 44px}
+  .prompt{
+    font-family:var(--mono);font-size:13px;color:var(--accent);
+    letter-spacing:0.02em;margin-bottom:18px;
+  }
+  h1{
+    font-size:34px;font-weight:700;letter-spacing:-0.02em;
+    line-height:1.1;margin-bottom:10px;
+  }
+  .role{
+    font-family:var(--mono);font-size:14px;color:var(--muted);
+    margin-bottom:22px;
+  }
+  .role b{color:var(--accent);font-weight:500}
+  .lede{color:var(--muted);max-width:60ch;font-size:15px}
+  .lede strong{color:var(--text);font-weight:600}
+  .links{display:flex;gap:20px;flex-wrap:wrap;margin-top:26px}
+  .links a{
+    font-family:var(--mono);font-size:13px;color:var(--muted);
+    border-bottom:1px solid var(--line);padding-bottom:2px;
+    transition:color .15s,border-color .15s;
+  }
+  .links a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* ---- section ---- */
+  section{padding:34px 0;border-top:1px solid var(--line)}
+  .sec-head{
+    font-family:var(--mono);font-size:12px;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:24px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .sec-head::before{content:"//";color:var(--accent);opacity:.7}
+
+  /* ---- cve cards ---- */
+  .cve{
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:18px 20px;margin-bottom:12px;
+    transition:border-color .15s;
+  }
+  .cve:hover{border-color:#2c3a48}
+  .cve-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  .cve-id{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text)}
+  .cve-id .tag{color:var(--accent)}
+  .score{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--muted);white-space:nowrap}
+  .score .c{color:var(--crit)}
+  .score .h{color:#e0b264}
+  .cve-title{font-size:14px;color:var(--text);margin-bottom:8px;font-weight:500}
+  .cve p{font-size:13.5px;color:var(--muted);line-height:1.6}
+  .cve .ref{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:8px}
+
+  /* ---- experience / project blocks ---- */
+  .block{margin-bottom:26px}
+  .block:last-child{margin-bottom:0}
+  .block-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .block-title{font-size:16px;font-weight:600;color:var(--text)}
+  .block-title .sub{font-weight:400;color:var(--muted);font-size:14px}
+  .block-date{font-family:var(--mono);font-size:12px;color:var(--dim);white-space:nowrap}
+  ul.pts{list-style:none;margin-top:10px}
+  ul.pts li{
+    position:relative;padding-left:18px;color:var(--muted);
+    font-size:13.5px;margin-bottom:5px;line-height:1.55;
+  }
+  ul.pts li::before{
+    content:"–";position:absolute;left:0;color:var(--accent);opacity:.75;
+  }
+  .stack{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:10px}
+  .stack span{color:var(--muted)}
+
+  /* ---- simple rows ---- */
+  .row{
+    display:flex;justify-content:space-between;gap:16px;
+    padding:11px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;
+  }
+  .row:last-child{border-bottom:none}
+  .row .l{color:var(--text);font-size:14px}
+  .row .l .m{color:var(--muted);font-size:13px}
+  .row .r{font-family:var(--mono);font-size:12px;color:var(--dim);white-space:nowrap}
+
+  /* ---- skills ---- */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font-family:var(--mono);font-size:12px;color:var(--muted);
+    background:var(--accent-soft);border:1px solid var(--line);
+    padding:5px 11px;border-radius:5px;
+  }
+
+  footer{padding:40px 0 70px;border-top:1px solid var(--line);margin-top:8px}
+  footer .f{font-family:var(--mono);font-size:12px;color:var(--dim)}
+
+  @media(max-width:560px){
+    header{padding:56px 0 36px}
+    h1{font-size:27px}
+    .wrap{padding:0 18px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="prompt">$ whoami</div>
+    <h1>이교준</h1>
+    <div class="role">Offensive Security · <b>LLM/Agentic AI 기반 자율 취약점 발굴</b></div>
+    <p class="lede">웹·시스템 취약점 분석을 기반으로, <strong>실제 오픈소스 소프트웨어에서 CVE를 발굴</strong>하고 LLM 에이전트가 스스로 취약점을 추론·익스플로잇하도록 만드는 연구를 합니다. 한세대학교 융합보안전공, 2027년 2월 졸업 예정.</p>
+    <div class="links">
+      <a href="https://github.com/kyojune76" target="_blank" rel="noopener">github</a>
+      <a href="https://velog.io/@kyojune1197/posts" target="_blank" rel="noopener">velog</a>
+      <a href="https://dreamhack.io/users/83579" target="_blank" rel="noopener">dreamhack</a>
+      <a href="mailto:kyojune1197@naver.com">email</a>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">CVE / Vulnerability Research</div>
+
+    <div class="cve">
+      <div class="cve-top">
+        <div class="cve-id"><span class="tag">CVE-2026-65831</span> · ArcadeDB</div>
+        <div class="score">CVSS <span class="h">7.7 High</span></div>
+      </div>
+      <div class="cve-title">Privilege Escalation via GraalVM Sandbox Bypass</div>
+      <p>reader 권한만으로 JS 스크립팅에서 GraalVM 샌드박스를 우회해 호스트 파일을 읽는 권한상승 취약점 발굴. 제보 당일 메인테이너 패치·릴리스.</p>
+      <div class="ref">GHSA-48qw-824m-86pr</div>
+    </div>
+
+    <div class="cve">
+      <div class="cve-top">
+        <div class="cve-id"><span class="tag">Portabase</span> · Master Key Overwrite</div>
+        <div class="score">CVSS <span class="c">9.8 Critical</span></div>
+      </div>
+      <div class="cve-title">Unauthenticated Path Traversal → Key Overwrite</div>
+      <p>인증 없이 path traversal로 AES-256-GCM 마스터 키를 덮어쓰는 취약점 발굴. 제보 당일 메인테이너 패치·릴리스.</p>
+      <div class="ref">GHSA-7697-vf3j-253j</div>
+    </div>
+
+    <div class="cve">
+      <div class="cve-top">
+        <div class="cve-id"><span class="tag">CVE-2025-23061</span> · Mongoose</div>
+        <div class="score">N-day Research</div>
+      </div>
+      <div class="cve-title">Prototype Chain Bypass on Patched Version</div>
+      <p>패치 소스코드를 직접 분석해, 패치된 버전(mongoose 8.9.5)에도 프로토타입 체인을 통한 우회 가능성이 잔존함을 발견. 패치 적용만으로 위험이 해소되지 않음을 확인.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">Research &amp; Experience</div>
+
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">AIBB <span class="sub">— LLM 기반 자율 침투 테스트 시스템 (팀장)</span></div>
+        <div class="block-date">2026</div>
+      </div>
+      <ul class="pts">
+        <li>LLM 에이전트가 CVE·취약점명을 모르는 블라인드 환경에서 Nmap 신호만으로 취약점을 스스로 추론·익스플로잇하도록 설계·구현</li>
+        <li>도구를 단계적으로 개방하는 능력 래더(L0~L3)를 고안해, 각 취약점이 어느 자율성 수준에서 풀리는지 정량 측정</li>
+        <li>단발 RCE(shellshock, ssti, thinkphp)는 자율 해결, 다단계 익스플로잇(spring4shell)은 정확히 진단하고도 완주 실패하는 한계선을 규명</li>
+        <li>Scanner(Nmap+Nuclei) → LLM 페이로드 생성 → HTTP 공격 → 피드백 루프로 이어지는 파이프라인 자동화</li>
+      </ul>
+      <div class="stack">stack: <span>Python · Docker · Nmap · Nuclei · Claude API · Git</span></div>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">차량 네트워크(CAN) 보안 <span class="sub">— 구현 및 실데이터 분석</span></div>
+        <div class="block-date">2026</div>
+      </div>
+      <ul class="pts">
+        <li>CAN 버스의 브로드캐스트·ID 필터링 구조를 Python으로 직접 구현</li>
+        <li>실제 차량 공격 데이터를 분석해 DoS와 스푸핑의 탐지 난이도 차이를 규명하고 AI 기반 탐지의 필요성을 도출</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">교내 정보보호 연구실 <span class="sub">— 연구실장</span></div>
+        <div class="block-date">2025.04 – 2025.11</div>
+      </div>
+      <ul class="pts">
+        <li>디스크 이미징, 파일 카빙, 악성코드 정적분석</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">Project</div>
+    <div class="block">
+      <div class="block-head">
+        <div class="block-title">MyShieldOn <span class="sub">— On-device Android Security Checker</span></div>
+        <div class="block-date"><a href="https://github.com/kyojune76/MyShieldOn" target="_blank" rel="noopener" style="color:var(--accent)">repo ↗</a></div>
+      </div>
+      <ul class="pts">
+        <li>루팅 감지, APK 무결성 검증, 금융앱 서명 hash 무결성 검증, ADB 모드 활성화 확인, 스토어 외 설치 APK 확인</li>
+        <li>보안의식이 낮은 고연령층 사용자를 고려한 API 다양화 로직 설계</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">CTF / Competitions</div>
+    <div class="row">
+      <div class="l">핵테온 세종 CTF 2026 <span class="m">· 웹 해킹 · AI 보안 파트 전담</span></div>
+      <div class="r">250팀 중 47위</div>
+    </div>
+    <div class="row">
+      <div class="l">picoCTF 2026 <span class="m">· Carnegie Mellon University · 웹 · AI 보안</span></div>
+      <div class="r">47위 / 9,049명</div>
+    </div>
+    <div class="row">
+      <div class="l">Dreamhack <span class="m">· 워게임 · N-day 리서치 40여 편 기록</span></div>
+      <div class="r">랭킹 947위</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">Skills</div>
+    <div class="chips">
+      <span class="chip">Web Hacking</span>
+      <span class="chip">Vulnerability Research</span>
+      <span class="chip">LLM / Agentic AI Security</span>
+      <span class="chip">Android Security</span>
+      <span class="chip">Forensics</span>
+      <span class="chip">Ghidra</span>
+      <span class="chip">Python</span>
+      <span class="chip">Docker</span>
+      <span class="chip">JavaScript</span>
+      <span class="chip">React / Node.js</span>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f">이교준 · kyojune1197@naver.com · github.com/kyojune76</div>
+  </footer>
+
+</div>
+</body>
+</html>
