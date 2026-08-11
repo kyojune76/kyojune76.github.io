@@ -218,7 +218,7 @@
   <div class="wrap">
     <div class="eyebrow">Vulnerability Research</div>
     <h2 class="sec">CVE · 취약점 리서치</h2>
-    <p class="sec-sub">제보 당일 패치·릴리스된 두 건을 포함해, 실제로 쓰이는 오픈소스에서 발굴했다.</p>
+    <p class="sec-sub">졸업 프로젝트 AIBB의 타겟 선정 파이프라인으로 우선순위를 매긴 오픈소스에서, Claude Code와 함께 소스코드를 감사해 발굴했다.</p>
 
     <div class="cve">
       <div class="cve-top">
@@ -307,17 +307,18 @@
             <li>기존 도구 30% 대비 <b>80%+ 성공률</b>을 목표로, 피드백 루프 효과를 정량 측정</li>
           </ul>
           <div class="verdict"><b>한계선 규명 —</b> 단발 RCE(shellshock · ssti · thinkphp)는 자율 해결되나, 다단계 익스플로잇(spring4shell)은 정확히 진단하고도 완주에 실패. 이 지점은 소스코드 감사에서 사람의 판단이 집중되는 구간과 일치한다.</div>
+          <div class="verdict" style="border-left-color:#56D364"><b style="color:#56D364">리얼월드 확장 —</b> 블랙박스 실험에서 버그바운티·CVE로 범위를 넓히며 소스코드 도메인까지 확장. 타겟 선정 파이프라인이 오픈소스의 우선순위를 점수화했고, 그 선정에서 Portabase(9.8)·ArcadeDB(7.7)를 발굴 — 발굴 자체는 Claude Code와의 협업으로 수행.</div>
           <div class="tstack">Python · Docker · Nmap · Nuclei · Claude API · Git &nbsp;&nbsp;<a href="https://github.com/kyojune76/AIBB-Solo" style="color:#7FA8E0;border-bottom:1px solid #2C3038">github.com/kyojune76/AIBB-Solo ↗</a></div>
         </div>
         <div>
           <h5>능력 래더 (L0 → L3)</h5>
           <div class="ladder">
-            <div class="rung"><span class="lv">L0</span><span class="d">최소 도구 — 순수 추론</span></div>
-            <div class="rung"><span class="lv">L1</span><span class="d">기본 스캐닝 개방</span></div>
-            <div class="rung"><span class="lv">L2</span><span class="d">익스플로잇 도구 개방</span></div>
-            <div class="rung"><span class="lv">L3</span><span class="d">전체 도구 체인 개방</span></div>
+            <div class="rung"><span class="lv">L0</span><span class="d">스캐닝 정보만 제공</span></div>
+            <div class="rung"><span class="lv">L1</span><span class="d">curl 등 요청 도구 개방</span></div>
+            <div class="rung"><span class="lv">L2</span><span class="d">셸 획득용 도구 개방</span></div>
+            <div class="rung"><span class="lv">L3</span><span class="d">전체 도구 + 세션 메모리 누적</span></div>
           </div>
-          <p style="font-size:13px;color:#8B93A0;margin-top:14px;line-height:1.5">도구를 단계적으로 개방해, 각 취약점이 <b style="color:#C4C9D0">어느 자율성 수준에서 풀리는지</b>를 정량 측정했다.</p>
+          <p style="font-size:13px;color:#8B93A0;margin-top:14px;line-height:1.5">도구를 단계적으로 개방해 <b style="color:#C4C9D0">각 취약점이 어느 자율성 수준에서 풀리는지</b>를 정량 측정. L3에서 세션 메모리를 누적하자 spring4shell을 제외한 3개 환경이 자율 해결됐다.</p>
         </div>
       </div>
     </div>
