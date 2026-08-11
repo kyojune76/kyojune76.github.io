@@ -1,83 +1,418 @@
-# kyojune76
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이교준 · Kyojune Lee — Offensive Security</title>
+<style>
+  :root{
+    --paper:#FBFBF9;      /* warm off-white, not cream */
+    --ink:#14161A;        /* near-black text */
+    --ink2:#3D434D;       /* secondary */
+    --mut:#767E8A;        /* muted */
+    --line:#E4E4DF;       /* hairlines */
+    --card:#FFFFFF;
+    --blue:#1B3A6B;       /* deep ink-blue accent */
+    --blue-soft:#EAF0F8;
+    --crit:#C02434;       /* critical red */
+    --high:#B4791A;       /* high amber */
+    --ok:#2E7D4F;         /* green */
+    --ok-soft:#E7F2EC;
+    --mono:'SFMono-Regular',ui-monospace,'JetBrains Mono','Menlo','Consolas',monospace;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings:"tnum" 1;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 32px}
 
-한세대학교 IT학부 융합보안전공 · 2027년 2월 졸업 예정
-Offensive Security / LLM · Agentic AI 기반 자율 취약점 발굴
+  /* ---------- eyebrow / section heads ---------- */
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    color:var(--mut);text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--mut);display:inline-block}
+  section{padding:66px 0;border-top:1px solid var(--line)}
+  h2.sec{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+  .sec-sub{color:var(--mut);font-size:15px;margin-bottom:34px;max-width:640px}
 
-## Skills
-- Web Hacking
-- Android Security
-- Forensics (File Carving, Disk Imaging, 정적분석, 동적분석)
-- LLM / Agentic AI 기반 보안 도구 개발
-- JavaScript
-- React / Node.js
-- HTML / CSS
-- Figma
+  /* ---------- hero ---------- */
+  header{padding:78px 0 58px}
+  .hero-id{font-family:var(--mono);font-size:13px;color:var(--blue);letter-spacing:.05em;margin-bottom:20px}
+  .hero-id b{background:var(--blue);color:#fff;padding:3px 8px;border-radius:5px;font-weight:700}
+  h1{font-size:64px;line-height:1.02;font-weight:850;letter-spacing:-.035em}
+  h1 .en{display:block;font-size:26px;font-weight:600;color:var(--mut);letter-spacing:-.01em;margin-top:10px;font-family:var(--mono)}
+  .tag{margin-top:26px;font-size:19px;color:var(--ink2);max-width:680px;font-weight:450}
+  .tag b{color:var(--ink);font-weight:700}
+  .meta{margin-top:30px;display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--mut);font-family:var(--mono)}
+  .meta a:hover{color:var(--blue)}
 
----
+  /* stat row */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:44px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+  .stat{padding:22px 20px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:none}
+  .stat .n{font-family:var(--mono);font-size:34px;font-weight:750;letter-spacing:-.03em;color:var(--blue)}
+  .stat .l{font-size:12.5px;color:var(--mut);margin-top:4px}
 
-## CVE / Vulnerability Research
+  /* ---------- methodology strip ---------- */
+  .method{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:20px 18px;position:relative}
+  .step .k{font-family:var(--mono);font-size:24px;font-weight:750;color:var(--line)}
+  .step.hot .k{color:var(--blue)}
+  .step h4{font-size:15px;margin:8px 0 6px;font-weight:750}
+  .step p{font-size:12.5px;color:var(--mut);line-height:1.45}
+  .step .badge{margin-top:14px;display:inline-block;font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:20px;border:1px solid var(--line);color:var(--mut)}
+  .step.hot .badge{border-color:var(--blue);color:var(--blue);font-weight:700}
+  .method-note{margin-top:16px;background:var(--blue-soft);border-radius:11px;padding:18px 22px;font-size:14.5px;color:var(--ink2);line-height:1.5}
+  .method-note b{color:var(--blue)}
 
-### CVE-2026-65831 — ArcadeDB Privilege Escalation
-- reader 권한만으로 JS 스크립팅에서 GraalVM 샌드박스를 우회해 호스트 파일을 읽는 권한상승 취약점 발굴
-- CVSS 7.7 (High), GHSA-48qw-824m-86pr
-- 제보 당일 메인테이너 패치 및 릴리스
+  /* ---------- CVE cards ---------- */
+  .cve{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:16px;position:relative;transition:border-color .15s,transform .15s}
+  .cve:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .cve-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+  .cve h3{font-size:21px;font-weight:800;letter-spacing:-.01em}
+  .cve h3 .sub{display:block;font-size:14.5px;font-weight:500;color:var(--ink2);margin-top:5px;letter-spacing:0}
+  .score{flex-shrink:0;text-align:center;border:1.5px solid;border-radius:11px;padding:9px 15px;min-width:92px}
+  .score .v{font-family:var(--mono);font-size:28px;font-weight:750;line-height:1}
+  .score .s{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;margin-top:3px}
+  .score.crit{border-color:var(--crit);color:var(--crit)}
+  .score.high{border-color:var(--high);color:var(--high)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 14px}
+  .chip{font-family:var(--mono);font-size:11.5px;padding:4px 11px;border-radius:20px;background:#F3F3F0;color:var(--ink2)}
+  .chip.id{background:var(--ok-soft);color:var(--ok);font-weight:600}
+  .chip.star{background:transparent;border:1px solid var(--line);color:var(--mut)}
+  .cve ul{list-style:none;margin-top:4px}
+  .cve li{font-size:14.5px;color:var(--ink2);padding-left:20px;position:relative;margin-bottom:6px;line-height:1.5}
+  .cve li::before{content:"▸";position:absolute;left:0;color:var(--blue)}
+  .cve li b{color:var(--ink);font-weight:700}
+  code{font-family:var(--mono);font-size:.88em;background:#F3F3F0;padding:1.5px 6px;border-radius:5px;color:var(--crit)}
 
-### Portabase Master Key Overwrite
-- 인증 없이 path traversal로 AES-256-GCM 마스터 키를 덮어쓰는 취약점 발굴
-- CVSS 9.8 (Critical), GHSA-7697-vf3j-253j
-- 제보 당일 메인테이너 패치 및 릴리스
+  /* ---------- AIBB feature ---------- */
+  .feat{background:var(--ink);color:#fff;border-radius:16px;padding:38px 40px;position:relative;overflow:hidden}
+  .feat .eyebrow{color:#8B93A0}
+  .feat .eyebrow::before{background:#8B93A0}
+  .feat h3{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .feat .role{font-family:var(--mono);font-size:13px;color:#7FA8E0;margin-top:8px}
+  .feat-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:30px;margin-top:26px}
+  .feat h5{font-size:13px;font-family:var(--mono);letter-spacing:.06em;color:#8B93A0;text-transform:uppercase;margin-bottom:12px}
+  .feat ul{list-style:none}
+  .feat li{font-size:14px;color:#D4D8DE;padding-left:18px;position:relative;margin-bottom:9px;line-height:1.5}
+  .feat li::before{content:"▸";position:absolute;left:0;color:#5B8BD0}
+  .feat li b{color:#fff;font-weight:700}
+  .ladder{display:flex;flex-direction:column;gap:8px}
+  .rung{border:1px solid #2C3038;border-radius:9px;padding:11px 15px;display:flex;align-items:center;gap:14px;background:#1B1E24}
+  .rung .lv{font-family:var(--mono);font-weight:750;color:#7FA8E0;font-size:15px}
+  .rung .d{font-size:13px;color:#C4C9D0}
+  .verdict{margin-top:24px;padding:18px 22px;background:#1B1E24;border:1px solid #2C3038;border-left:3px solid var(--crit);border-radius:10px;font-size:14.5px;color:#D4D8DE;line-height:1.55}
+  .verdict b{color:#fff}
+  .tstack{margin-top:20px;font-family:var(--mono);font-size:12px;color:#7C838F}
 
-### CVE-2025-23061 — Mongoose N-day Research
-- 패치 소스코드를 직접 분석해, 패치된 버전(mongoose 8.9.5)에도 프로토타입 체인을 통한 우회 가능성이 잔존함을 발견
-- 패치 적용만으로 위험이 해소되지 않음을 확인
+  /* ---------- two-col grid (research + project) ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:24px 26px}
+  .card h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
+  .card .role{font-family:var(--mono);font-size:12px;color:var(--mut);margin-bottom:14px}
+  .card ul{list-style:none}
+  .card li{font-size:14px;color:var(--ink2);padding-left:18px;position:relative;margin-bottom:7px;line-height:1.5}
+  .card li::before{content:"▸";position:absolute;left:0;color:var(--blue)}
+  .card a.repo{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--blue);border-bottom:1px solid var(--blue-soft);padding-bottom:1px}
+  .card a.repo:hover{border-color:var(--blue)}
 
----
+  /* skills */
+  .skills{display:flex;flex-wrap:wrap;gap:9px}
+  .skill{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 15px;font-size:13.5px;color:var(--ink2)}
+  .skill.key{border-color:var(--blue);color:var(--blue);font-weight:600;background:var(--blue-soft)}
 
-## Experience
+  /* awards */
+  .awards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .award{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+  .award .rank{font-family:var(--mono);font-size:30px;font-weight:750;color:var(--blue);letter-spacing:-.03em}
+  .award h4{font-size:16px;margin:6px 0 3px;font-weight:750}
+  .award p{font-size:13px;color:var(--mut)}
 
-### AIBB (AI BunkerBuster)
-**LLM 기반 자율 침투 테스트 시스템 개발 (팀장)**
-- Docker 격리 환경에서 5개 취약점 환경 자동 공격 파이프라인 설계 및 구현
-- Scanner(Nmap + Nuclei) → LLM 페이로드 생성 → HTTP 공격 → 피드백 루프 자동화
-- 도구를 단계적으로 개방하는 능력 래더(L0~L3)를 고안해, 각 취약점이 어느 자율성 수준에서 풀리는지 정량 측정
-- Phase별 전략(basic → encoding → advanced → creative)으로 70회 자동 시도 및 실패 학습
-- 단발 RCE(shellshock, ssti, thinkphp)는 자율 해결, 다단계 익스플로잇(spring4shell)은 정확히 진단하고도 완주 실패하는 한계선을 규명
-- Docker Manager, Scanner 통합, Autonomous Attack Bot 핵심 모듈 개발
-- 기존 도구 30% 대비 80%+ 성공률 목표, 피드백 루프 효과 정량 측정
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:52px 0 64px}
+  .foot-in{background:var(--ink);border-radius:16px;padding:38px 40px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+  .foot-in h3{font-size:24px;font-weight:800}
+  .foot-in .en{font-family:var(--mono);color:#7FA8E0;font-size:15px;margin-top:4px}
+  .foot-links{font-family:var(--mono);font-size:13px;color:#C4C9D0;text-align:right;line-height:1.9}
+  .foot-links a:hover{color:#7FA8E0}
+  .thesis{font-size:17px;color:var(--ink2);max-width:720px;margin-bottom:30px;line-height:1.55}
+  .thesis b{color:var(--ink);font-weight:750}
 
-**기술**: Python, Docker, Nmap, Nuclei, Claude API, Git
+  @media(max-width:820px){
+    .wrap{padding:0 20px}
+    h1{font-size:44px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:none}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
+    .method{grid-template-columns:1fr 1fr}
+    .feat-grid,.grid2,.awards{grid-template-columns:1fr}
+    .cve-top{flex-direction:column}
+  }
+</style>
+</head>
+<body>
 
-### 차량 네트워크(CAN) 보안 — 구현 및 실데이터 분석
-- CAN 버스의 브로드캐스트 및 ID 필터링 구조를 Python으로 직접 구현
-- 실제 차량 공격 데이터를 분석해 DoS와 스푸핑의 탐지 난이도 차이를 규명하고 AI 기반 탐지의 필요성을 도출
+<!-- HERO -->
+<header>
+  <div class="wrap">
+    <div class="hero-id"><b>kyojune76</b> &nbsp;/&nbsp; Offensive Security Researcher</div>
+    <h1>이교준<span class="en">Kyojune Lee</span></h1>
+    <p class="tag">추상적 위협과 실행 가능한 익스플로잇 사이에서, <b>자동화된 공격이 어디서 멈추고 무엇을 필요로 하는지</b>를 측정합니다. 소스코드 감사로 취약점을 찾고, LLM 에이전트로 그 경계를 잽니다.</p>
+    <div class="meta">
+      <span>한세대학교 융합보안전공 · 2027.02 졸업예정</span>
+      <a href="https://github.com/kyojune76">github.com/kyojune76</a>
+      <a href="https://velog.io/@kyojune1197/posts">velog.io/@kyojune1197</a>
+      <a href="https://dreamhack.io/users/83579">dreamhack.io/@83579</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">2</div><div class="l">CVE 발급 (9.8 Critical 포함)</div></div>
+      <div class="stat"><div class="n">9.8</div><div class="l">최고 CVSS 점수</div></div>
+      <div class="stat"><div class="n">0.5%</div><div class="l">picoCTF 2026 상위</div></div>
+      <div class="stat"><div class="n">40+</div><div class="l">리서치 · 라이트업</div></div>
+    </div>
+  </div>
+</header>
 
-### 교내 정보보호 연구실 연구실장 (2025.04 ~ 2025.11)
-- 디스크 이미징, 파일 카빙, 악성코드 정적분석
 
----
+<!-- Research Experience -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Research Experience</div>
+    <h2 class="sec">연구 경력</h2>
+    <p class="sec-sub">세종대학교 인공지능 사이버보안 연구실(CYAI Lab) 학부연구생 · 2026.07 – 현재</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>침입감내를 위한 동적 군 네트워크 모델링</h3>
+        <div class="role">ADD 국방 관련 위탁과제 · 동적 네트워크 구현 담당</div>
+        <ul>
+          <li>최근 <b>5개년 동적 그래프 기반 침입탐지 연구</b>를 분석해, 노드 정체성이 IP에 종속되어 컨테이너 재배정 시 추적이 단절되는 공통 한계를 도출</li>
+          <li>서비스 라벨·논리 신원을 <b>논리 앵커</b>로 삼는 물리·논리 이중층 그래프 모델을 제안 — IP가 바뀌어도 추적 연속성 유지</li>
+          <li>단일 노드 Kubernetes(k3s) 예비실험으로 <b>Pod IP 변경에도 서비스 추적이 단절되지 않음</b>을 실증</li>
+          <li>MITRE ATT&amp;CK TTP 매핑을 결합한 3계층(물리·논리·위협맥락) 분석 환경 설계, 위협 맥락 계층은 LLM 기반 후속 공격 루트 예측으로 확장 예정</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>탐지 모델 적대적 평가 및 개선</h3>
+        <div class="role">KT 산학과제 · AI 기반 악성메일 분류 시스템</div>
+        <ul>
+          <li>방어 측 수집 데이터만으로 측정한 탐지율이 <b>실제 성능을 과대평가</b>한다는 문제의식에서 출발</li>
+          <li>격리 통제망에 검증용 악성 샘플셋을 구성·라벨링, 분류기가 구조적으로 취약해지는 조건을 도출해 모델 개선 근거로 전달</li>
+          <li>기본 TCP 통신 기반 파일 전송을 분류 시스템이 놓치는 조건을 규명해 개선 방안 제시</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-## Featured Project
+<!-- CVE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Vulnerability Research</div>
+    <h2 class="sec">CVE · 취약점 리서치</h2>
+    <p class="sec-sub">제보 당일 패치·릴리스된 두 건을 포함해, 실제로 쓰이는 오픈소스에서 발굴했다.</p>
 
-### MyShieldOn — On-device Android Security Checker
-- 루팅 감지
-- APK integrity 검증
-- 금융앱 서명 hash값 무결성 검증
-- ADB Mode 활성화 여부 확인
-- 보안의식 낮은 고연령층 대상을 고려한 API 다양화 로직 사용
-- 스토어 외 설치 APK 확인
+    <div class="cve">
+      <div class="cve-top">
+        <h3>Portabase — 미인증 경로 순회로 마스터키 덮어쓰기<span class="sub">Unauthenticated path traversal overwrites AES-256-GCM master key</span></h3>
+        <div class="score crit"><div class="v">9.8</div><div class="s">CRITICAL</div></div>
+      </div>
+      <div class="chips">
+        <span class="chip id">CVE-2026-67449</span>
+        <span class="chip">GHSA-7697-vf3j-253j</span>
+        <span class="chip">CWE-22 · CWE-306</span>
+        <span class="chip star">★ 1.6k</span>
+        <span class="chip">제보 당일 패치</span>
+      </div>
+      <ul>
+        <li>TUS 업로드 웹훅 핸들러에서 사용자 제어 헤더 <code>X-File-Path</code>가 sanitization 없이 <code>path.join()</code>에 전달되는 결함을 소스코드 감사로 발견</li>
+        <li>인증 미적용 업로드 엔드포인트와 결합 — 미인증 원격 공격자가 <b>HTTP 요청 2회</b>로 침해 가능함을 PoC로 입증</li>
+        <li>임의 파일 쓰기에서 멈추지 않고 <b>AES-256-GCM 마스터키</b>를 표적으로 선택 — 9.8을 결정한 지점</li>
+      </ul>
+    </div>
 
-Repository: https://github.com/kyojune76/MyShieldOn
+    <div class="cve">
+      <div class="cve-top">
+        <h3>ArcadeDB — reader 권한 권한상승<span class="sub">GraalVM sandbox bypass via reader role → arbitrary host file read</span></h3>
+        <div class="score high"><div class="v">7.7</div><div class="s">HIGH</div></div>
+      </div>
+      <div class="chips">
+        <span class="chip id">CVE-2026-65831</span>
+        <span class="chip">GHSA-48qw-824m-86pr</span>
+        <span class="chip">CWE-269 · CWE-863</span>
+        <span class="chip star">★ 1.1k</span>
+        <span class="chip">제보 당일 패치</span>
+      </div>
+      <ul>
+        <li><code>reader</code> 권한만으로 JS 스크립팅의 GraalVM 샌드박스를 우회해 호스트 파일을 읽는 취약점</li>
+        <li>개별 결함이 아니라 <b>권한 모델의 설계 문제</b>로 규명 — 역할이 명시하는 권한(read)과 실제 부여되는 능력(script execution)의 의미론적 불일치가 근본 원인</li>
+      </ul>
+    </div>
 
----
+    <div class="cve">
+      <div class="cve-top">
+        <h3>Mongoose — N-day 리서치<span class="sub">Prototype-chain bypass persists after patch (mongoose 8.9.5)</span></h3>
+      </div>
+      <div class="chips">
+        <span class="chip">CVE-2025-23061</span>
+        <span class="chip">N-day Analysis</span>
+      </div>
+      <ul>
+        <li>패치 소스코드를 직접 분석해, 패치 버전에도 <b>프로토타입 체인을 통한 우회 가능성</b>이 잔존함을 확인</li>
+        <li>패치 적용만으로 위험이 해소되지 않음을 검증 — 버전 대조 방식이 놓치는 사각지대</li>
+      </ul>
+    </div>
 
-## Awards
+    <div class="cve">
+      <div class="cve-top">
+        <h3>Vercel skills CLI — AI 코딩 에이전트 공급망 자격증명 유출<span class="sub">Symlink in a published skill exfiltrates local credentials into agent context</span></h3>
+      </div>
+      <div class="chips">
+        <span class="chip">CWE-59</span>
+        <span class="chip">Supply Chain</span>
+        <span class="chip star">vercel-labs/skills</span>
+      </div>
+      <ul>
+        <li>스킬 설치 CLI의 <code>fs.cp(dereference:true)</code> 경로에서, 공격자 저장소의 심볼릭 링크가 피해자 로컬 자격증명(<code>~/.aws/credentials</code>, <code>~/.ssh/id_rsa</code>, <code>.env</code>)을 스킬 디렉토리로 물질화시키는 결함을 발견</li>
+        <li>에이전트 환경 자동 감지(<code>CLAUDE_CODE</code> / <code>CURSOR_AGENT</code>)로 확인 프롬프트가 우회되고, 다음 세션의 컨텍스트를 통해 유출되는 <b>3-단 신뢰경계 체인</b>까지 실증</li>
+        <li>동일 결함을 독립적으로 발견해 벤더에 리포트 제출 — 근소한 차이로 선행 제보자에게 배정되었으나, PoC와 분석은 자체 수행</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-- 핵테온 세종 CTF 2026 — 웹 해킹 및 AI 보안 파트 전담, 250팀 중 47위
-- picoCTF 2026 (Carnegie Mellon University) — 웹 및 AI 보안 파트, 전체 47위 (참가자 9,049명)
 
----
+<!-- AIBB feature -->
+<section>
+  <div class="wrap">
+    <div class="feat">
+      <div class="eyebrow">Featured Project</div>
+      <h3>AIBB — AI BunkerBuster</h3>
+      <div class="role">LLM 기반 자율 침투 테스트 시스템 · 팀장</div>
+      <div class="feat-grid">
+        <div>
+          <h5>설계 / 측정</h5>
+          <ul>
+            <li>Docker 격리 환경에서 5개 취약점 환경 <b>자동 공격 파이프라인</b> 설계·구현</li>
+            <li>Scanner(Nmap + Nuclei) → LLM 페이로드 생성 → HTTP 공격 → <b>피드백 루프</b> 자동화</li>
+            <li>Phase별 전략(basic → encoding → advanced → creative)으로 70회 자동 시도·실패 학습</li>
+            <li>기존 도구 30% 대비 <b>80%+ 성공률</b>을 목표로, 피드백 루프 효과를 정량 측정</li>
+          </ul>
+          <div class="verdict"><b>한계선 규명 —</b> 단발 RCE(shellshock · ssti · thinkphp)는 자율 해결되나, 다단계 익스플로잇(spring4shell)은 정확히 진단하고도 완주에 실패. 이 지점은 소스코드 감사에서 사람의 판단이 집중되는 구간과 일치한다.</div>
+          <div class="tstack">Python · Docker · Nmap · Nuclei · Claude API · Git &nbsp;&nbsp;<a href="https://github.com/kyojune76/AIBB-Solo" style="color:#7FA8E0;border-bottom:1px solid #2C3038">github.com/kyojune76/AIBB-Solo ↗</a></div>
+        </div>
+        <div>
+          <h5>능력 래더 (L0 → L3)</h5>
+          <div class="ladder">
+            <div class="rung"><span class="lv">L0</span><span class="d">최소 도구 — 순수 추론</span></div>
+            <div class="rung"><span class="lv">L1</span><span class="d">기본 스캐닝 개방</span></div>
+            <div class="rung"><span class="lv">L2</span><span class="d">익스플로잇 도구 개방</span></div>
+            <div class="rung"><span class="lv">L3</span><span class="d">전체 도구 체인 개방</span></div>
+          </div>
+          <p style="font-size:13px;color:#8B93A0;margin-top:14px;line-height:1.5">도구를 단계적으로 개방해, 각 취약점이 <b style="color:#C4C9D0">어느 자율성 수준에서 풀리는지</b>를 정량 측정했다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-## Activity
+<!-- Research & Projects -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Research &amp; Projects</div>
+    <h2 class="sec">연구 · 프로젝트</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>차량 네트워크(CAN) 보안</h3>
+        <div class="role">구현 및 실데이터 분석</div>
+        <ul>
+          <li>CAN 버스의 브로드캐스트·ID 필터링 구조를 Python으로 직접 구현</li>
+          <li>실차 공격 데이터 분석으로 DoS·스푸핑의 탐지 난이도 차이를 규명하고 AI 기반 탐지의 필요성 도출</li>
+        </ul>
+        <a class="repo" href="https://velog.io/@kyojune1197/python%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-CAN%ED%86%B5%EC%8B%A0-%EA%B5%AC%ED%98%84%EA%B3%BC-CAN%EB%A9%94%EC%8B%9C%EC%A7%80-%EC%8A%A4%ED%8B%B0%ED%95%91">Python CAN 통신 구현 ↗</a>&nbsp;&nbsp;
+        <a class="repo" href="https://velog.io/@kyojune1197/CAN-%ED%86%B5%EC%8B%A0-DOS%EA%B3%B5%EA%B2%A9-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EB%B6%84%EC%84%9D-vypzaw5k">DoS·스푸핑 데이터셋 분석 ↗</a>
+      </div>
+      <div class="card">
+        <h3>MyShieldOn</h3>
+        <div class="role">On-device Android Security Checker</div>
+        <ul>
+          <li>루팅 감지 · APK 무결성 검증 · 금융앱 서명 hash 무결성 확인</li>
+          <li>ADB 모드 활성화 · 스토어 외 설치 APK 탐지</li>
+          <li>보안의식 낮은 고연령층을 고려한 API 다양화 로직</li>
+        </ul>
+        <a class="repo" href="https://github.com/kyojune76/MyShieldOn">github.com/kyojune76/MyShieldOn ↗</a>
+      </div>
+      <div class="card">
+        <h3>교내 정보보호 연구실 · 연구실장</h3>
+        <div class="role">2025.04 – 2025.11</div>
+        <ul>
+          <li>디스크 이미징 · 파일 카빙 · 악성코드 정적분석 실습 기획·운영</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>기술 스택</h3>
+        <div class="role">Skills</div>
+        <div class="skills">
+          <span class="skill key">Web Hacking</span>
+          <span class="skill key">소스코드 감사</span>
+          <span class="skill key">LLM · Agentic AI</span>
+          <span class="skill">Android Security</span>
+          <span class="skill">Forensics</span>
+          <span class="skill">Python</span>
+          <span class="skill">Docker</span>
+          <span class="skill">React / Node.js</span>
+          <span class="skill">JavaScript</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-- Dreamhack: https://dreamhack.io/users/83579
-- Velog: https://velog.io/@kyojune1197/posts
+<!-- Awards -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Awards</div>
+    <h2 class="sec">수상</h2>
+    <div class="awards">
+      <div class="award">
+        <div class="rank">Top 0.5%</div>
+        <h4>picoCTF 2026 · Carnegie Mellon University</h4>
+        <p>참가자 9,049명 중 47위 · 웹 · AI 보안 파트</p>
+      </div>
+      <div class="award">
+        <div class="rank">47 / 250</div>
+        <h4>핵테온 세종 CTF 2026</h4>
+        <p>웹 해킹 · AI 보안 파트 전담</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <p class="thesis"><b>더 센 공격 도구를 만드는 사람이 아니라, 자동화된 공격이 어디서 멈추고 무엇을 필요로 하는지를 재는 사람.</b></p>
+    <div class="foot-in">
+      <div>
+        <h3>이교준</h3>
+        <div class="en">Kyojune Lee · Offensive Security</div>
+      </div>
+      <div class="foot-links">
+        <a href="https://github.com/kyojune76">github.com/kyojune76</a><br>
+        <a href="https://velog.io/@kyojune1197/posts">velog.io/@kyojune1197</a><br>
+        <a href="https://dreamhack.io/users/83579">dreamhack.io/users/83579</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
