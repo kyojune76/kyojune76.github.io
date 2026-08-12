@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -87,6 +88,8 @@
   .chips{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 14px}
   .chip{font-family:var(--mono);font-size:11.5px;padding:4px 11px;border-radius:20px;background:#F3F3F0;color:var(--ink2)}
   .chip.id{background:var(--ok-soft);color:var(--ok);font-weight:600}
+  .chip.link{display:inline-flex;align-items:center;text-decoration:none;transition:all .15s}
+  .chip.link:hover{background:var(--blue);color:#fff}
   .chip.star{background:transparent;border:1px solid var(--line);color:var(--mut)}
   .cve ul{list-style:none;margin-top:4px}
   .cve li{font-size:14.5px;color:var(--ink2);padding-left:20px;position:relative;margin-bottom:6px;line-height:1.5}
@@ -226,8 +229,8 @@
         <div class="score crit"><div class="v">9.8</div><div class="s">CRITICAL</div></div>
       </div>
       <div class="chips">
-        <span class="chip id">CVE-2026-67449</span>
-        <span class="chip">GHSA-7697-vf3j-253j</span>
+        <a href="https://github.com/Portabase/portabase/security/advisories/GHSA-7697-vf3j-253j" target="_blank" rel="noopener noreferrer" class="chip id link">CVE-2026-67449 ↗</a>
+        <a href="https://github.com/Portabase/portabase/security/advisories/GHSA-7697-vf3j-253j" target="_blank" rel="noopener noreferrer" class="chip link">GHSA-7697-vf3j-253j ↗</a>
         <span class="chip">CWE-22 · CWE-306</span>
         <span class="chip star">★ 1.6k</span>
         <span class="chip">제보 당일 패치</span>
@@ -245,8 +248,8 @@
         <div class="score high"><div class="v">7.7</div><div class="s">HIGH</div></div>
       </div>
       <div class="chips">
-        <span class="chip id">CVE-2026-65831</span>
-        <span class="chip">GHSA-48qw-824m-86pr</span>
+        <a href="https://github.com/ArcadeData/arcadedb/security/advisories/GHSA-48qw-824m-86pr" target="_blank" rel="noopener noreferrer" class="chip id link">CVE-2026-65831 ↗</a>
+        <a href="https://github.com/ArcadeData/arcadedb/security/advisories/GHSA-48qw-824m-86pr" target="_blank" rel="noopener noreferrer" class="chip link">GHSA-48qw-824m-86pr ↗</a>
         <span class="chip">CWE-269 · CWE-863</span>
         <span class="chip star">★ 1.1k</span>
         <span class="chip">제보 당일 패치</span>
@@ -415,3 +418,5 @@
 
 </body>
 </html>
+
+```
