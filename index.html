@@ -240,33 +240,73 @@
   <div class="wrap">
     <div class="eyebrow">Publication</div>
     <h2 class="sec">논문</h2>
-    <p class="sec-sub">코딩 에이전트가 저장소 자료의 간접 지시를 읽은 뒤, 어느 단계에서 이를 채택하고 어떤 승인 경로를 거쳐 파일을 수정하는지 추적했다.</p>
+    <p class="sec-sub">저장소 자료의 간접 지시가 단순히 읽힌 뒤 사라지는지, 현재 과업의 작업으로 채택되어 실제 파일 수정까지 이어지는지를 단계별로 추적했다.</p>
 
     <div class="cve">
       <div class="cve-top">
         <h3>컨텍스트 표현과 권한 모드에 따른 Claude Code의 간접 지시 채택과 범위 외 파일 수정에 관한 연구<span class="sub">A Study on Indirect Instruction Adoption and Out-of-Scope File Modification in Claude Code across Context Representations and Permission Modes</span></h3>
         <div class="score rev"><div class="v">심사 중</div><div class="s">UNDER REVIEW</div></div>
       </div>
+
       <div class="chips">
         <span class="chip id">제1저자</span>
         <span class="chip">사물인터넷융복합논문지 (한국사물인터넷학회)</span>
         <span class="chip">교신저자 김선집</span>
         <span class="chip">42 runs · Manual / Auto</span>
       </div>
+
       <ul>
-        <li><b>문제의식 —</b> 선행 연구는 공격 성공 · 경고 · 도구 호출을 각각 측정해, 실제 제품에서 인식된 지시가 채택과 승인을 거쳐 파일 수정으로 이어지는 경로가 분명하지 않았다. 이 경로를 모르면 방어를 모델의 판단과 제품의 승인 절차 중 어디에 두어야 할지 정할 수 없다.</li>
-        <li><b>설계 —</b> 동일한 상태 변경 지시를 텍스트 4종과 사람이 읽을 수 있는 이미지 3종, 총 7개 컨텍스트에 배치하고 Claude Code의 Manual · Auto 모드에서 42회 실행. 화면 기록과 실행 전후 상태 · SHA-256으로 단계를 판정</li>
-        <li><b>측정 무결성 —</b> 간접 지시 없는 기준 조건과 대조하고, 제외한 실행 6회의 사유를 모두 공개했으며, 두 평가자가 독립 판정(Cohen's κ = 0.81)</li>
+        <li><b>문제의식 —</b> 간접 지시를 읽었다는 사실과 파일이 수정됐다는 최종 결과만으로는 위험이 발생한 지점을 알 수 없다. 모델이 지시를 현재 과업으로 채택하지 않았는지, 채택한 뒤 수정 호출을 만들었지만 권한 단계에서 멈췄는지를 구분해야 방어가 개입할 위치를 정할 수 있다.</li>
+
+        <li><b>차별점 · 설계 —</b> 선행연구의 공격 성공률, 과업 정렬과 권한 검사 관점을 하나의 실제 Claude Code 실행 흐름에서 연결했다. 동일한 상태 변경 지시를 텍스트 4종과 사람이 읽을 수 있는 이미지 3종에 배치하고 Manual · Auto 모드에서 42회 실행해, 각 실행을 인식 · 계획 · 수정 호출 · 승인 경로 · 완료의 다섯 단계로 기록했다.</li>
+
+        <li><b>측정 근거 —</b> 화면 기록으로 판단 과정을 확인하고, 실행 전후 JSON 상태와 SHA-256으로 실제 수정을 검증했다. 간접 지시가 없는 기준 조건을 별도로 두었고, 주분석에서 제외한 6회도 제외 사유와 상태 결과를 함께 기록했다.</li>
       </ul>
 
       <div class="method m5">
-        <div class="step"><div class="k">S1</div><h4>인식</h4><p>지시를 화면에서 언급</p><span class="badge">42 / 42</span></div>
-        <div class="step hot"><div class="k">S2</div><h4>계획</h4><p>작업 계획에 대상 변경 포함</p><span class="badge">11 / 42</span></div>
-        <div class="step"><div class="k">S3</div><h4>수정 시도</h4><p>목표 경로로 도구 호출</p><span class="badge">9 / 42</span></div>
-        <div class="step"><div class="k">S4</div><h4>승인 경로</h4><p>Manual 승인창, Auto 무질문</p><span class="badge">9 / 9 통과</span></div>
-        <div class="step"><div class="k">S5</div><h4>완료</h4><p>상태 파일이 실제로 변경</p><span class="badge">9 / 42</span></div>
+        <div class="step">
+          <div class="k">S1</div>
+          <h4>인식</h4>
+          <p>간접 지시를 읽고 언급</p>
+          <span class="badge">42 / 42</span>
+        </div>
+
+        <div class="step hot">
+          <div class="k">S2</div>
+          <h4>채택 · 계획</h4>
+          <p>현재 과업의 작업으로 포함</p>
+          <span class="badge">11 / 42</span>
+        </div>
+
+        <div class="step">
+          <div class="k">S3</div>
+          <h4>수정 호출</h4>
+          <p>목표 파일을 바꾸는 도구 생성</p>
+          <span class="badge">9 / 42</span>
+        </div>
+
+        <div class="step">
+          <div class="k">S4</div>
+          <h4>승인 경로</h4>
+          <p>Manual 승인, Auto 무질문 실행</p>
+          <span class="badge">9 / 9 도달</span>
+        </div>
+
+        <div class="step">
+          <div class="k">S5</div>
+          <h4>완료</h4>
+          <p>상태 파일이 실제로 변경</p>
+          <span class="badge">9 / 42</span>
+        </div>
       </div>
-      <div class="method-note"><b>결과 —</b> 지시는 42회 모두 인식됐지만 계획 단계에서 11회로 줄었다. 간결한 개발 메모 이미지는 6회 중 5회 완료된 반면 작업흐름도 · 터미널 출력 · JSON은 한 번도 완료되지 않았고, 수정 호출이 생성된 뒤에는 두 모드 모두 모든 시도가 완료됐다. 인식과 채택은 서로 다른 단계이므로, 방어는 호출 전에는 지시의 출처를, 호출 후에는 수정 범위를 나누어 검증해야 한다.</div>
+
+      <div class="method-note">
+        <b>핵심 결과 —</b> 간접 지시는 42회 모두 인식됐지만 11회만 현재 과업의 계획에 포함됐고, 9회가 실제 파일 수정으로 이어졌다. 간결한 개발 메모 이미지는 6회 중 5회 완료된 반면, 상태 변경을 별도 단계로 드러낸 작업흐름도와 신뢰하기 어려운 터미널 출력 · JSON은 한 번도 완료되지 않았다. 위험을 가른 지점은 지시를 읽었는지가 아니라, 그 지시를 사용자 과업에 필요한 작업으로 채택했는지였다.
+      </div>
+
+      <div class="method-note">
+        <b>방어 시사점 —</b> 수정 호출 전에는 <b>지시의 출처와 사용자 요청의 관계</b>를 확인해야 한다. 이 단계에서는 README나 이미지에서 읽은 간접 지시가 사용자 요청과 같은 권한을 가진 작업으로 잘못 채택되는 것을 막을 수 있기 때문이다. 수정 호출이 만들어진 뒤에는 판단의 대상이 구체적인 파일 작업으로 바뀌므로, <b>수정 대상과 영향 범위</b>가 최초 요청을 벗어나는지 검사해야 한다. Manual 승인창은 지시의 출처와 수정 범위를 함께 보여주고, Auto 모드는 같은 검사를 실행 전에 자동 적용해 범위가 확대될 때 사용자에게 확인을 요청해야 한다.
+      </div>
     </div>
   </div>
 </section>
