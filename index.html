@@ -63,7 +63,9 @@
 
   /* ---------- methodology strip ---------- */
   .method{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .method.m5{grid-template-columns:repeat(5,1fr);gap:10px;margin-top:22px}
   .step{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:20px 18px;position:relative}
+  .method.m5 .step{padding:16px 14px}
   .step .k{font-family:var(--mono);font-size:24px;font-weight:750;color:var(--line)}
   .step.hot .k{color:var(--blue)}
   .step h4{font-size:15px;margin:8px 0 6px;font-weight:750}
@@ -84,6 +86,8 @@
   .score .s{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;margin-top:3px}
   .score.crit{border-color:var(--crit);color:var(--crit)}
   .score.high{border-color:var(--high);color:var(--high)}
+  .score.rev{border-color:var(--blue);color:var(--blue)}
+  .score.rev .v{font-family:var(--sans);font-size:18px;font-weight:800;letter-spacing:-.01em}
   .chips{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 14px}
   .chip{font-family:var(--mono);font-size:11.5px;padding:4px 11px;border-radius:20px;background:#F3F3F0;color:var(--ink2)}
   .chip.id{background:var(--ok-soft);color:var(--ok);font-weight:600}
@@ -115,6 +119,16 @@
   .verdict{margin-top:24px;padding:18px 22px;background:#1B1E24;border:1px solid #2C3038;border-left:3px solid var(--crit);border-radius:10px;font-size:14.5px;color:#D4D8DE;line-height:1.55}
   .verdict b{color:#fff}
   .tstack{margin-top:20px;font-family:var(--mono);font-size:12px;color:#7C838F}
+
+  /* prior-work failure areas (inside AIBB feature) */
+  .gaps-head{margin-top:28px}
+  .gaps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .gapc{border:1px solid #2C3038;border-radius:11px;background:#1B1E24;padding:18px 20px}
+  .gapc .gk{font-size:15px;font-weight:750;color:#fff;margin-bottom:6px}
+  .gapc p{font-size:13.5px;color:#C4C9D0;line-height:1.5}
+  .gapc p b{color:#fff}
+  .gapc .fix{margin-top:12px;padding-top:11px;border-top:1px dashed #2C3038;font-size:13px;color:#9FC0EC;line-height:1.5}
+  .gapc .fix b{color:#7FA8E0;font-weight:700}
 
   /* ---------- two-col grid (research + project) ---------- */
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -156,7 +170,8 @@
     .stat:nth-child(2){border-right:none}
     .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line)}
     .method{grid-template-columns:1fr 1fr}
-    .feat-grid,.grid2,.awards{grid-template-columns:1fr}
+    .method.m5{grid-template-columns:1fr 1fr}
+    .feat-grid,.grid2,.awards,.gaps{grid-template-columns:1fr}
     .cve-top{flex-direction:column}
   }
 </style>
@@ -190,7 +205,7 @@
   <div class="wrap">
     <div class="eyebrow">Research Experience</div>
     <h2 class="sec">연구 경력</h2>
-    <p class="sec-sub">세종대학교 인공지능 사이버보안 연구실(CYAI Lab) 학부연구생 · 2026.07 – 현재</p>
+    <p class="sec-sub">세종대학교 인공지능 사이버보안 연구실(CYAI Lab) 학부연구생 · 2026.07 – 2026.09</p>
     <div class="grid2">
       <div class="card">
         <h3>침입감내를 위한 동적 군 네트워크 모델링</h3>
@@ -211,6 +226,42 @@
           <li>기본 TCP 통신 기반 파일 전송을 분류 시스템이 놓치는 조건을 규명해 개선 방안 제시</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Publication -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Publication</div>
+    <h2 class="sec">논문</h2>
+    <p class="sec-sub">코딩 에이전트가 저장소 자료의 간접 지시를 읽은 뒤, 어느 단계에서 이를 채택하고 어떤 승인 경로를 거쳐 파일을 수정하는지 추적했다.</p>
+
+    <div class="cve">
+      <div class="cve-top">
+        <h3>컨텍스트 표현과 권한 모드에 따른 Claude Code의 간접 지시 채택과 범위 외 파일 수정에 관한 연구<span class="sub">A Study on Indirect Instruction Adoption and Out-of-Scope File Modification in Claude Code across Context Representations and Permission Modes</span></h3>
+        <div class="score rev"><div class="v">심사 중</div><div class="s">UNDER REVIEW</div></div>
+      </div>
+      <div class="chips">
+        <span class="chip id">제1저자</span>
+        <span class="chip">사물인터넷융복합논문지 (한국사물인터넷학회)</span>
+        <span class="chip">교신저자 김선집</span>
+        <span class="chip">42 runs · Manual / Auto</span>
+      </div>
+      <ul>
+        <li><b>문제의식 —</b> 선행 연구는 공격 성공 · 경고 · 도구 호출을 각각 측정해, 실제 제품에서 인식된 지시가 채택과 승인을 거쳐 파일 수정으로 이어지는 경로가 분명하지 않았다. 이 경로를 모르면 방어를 모델의 판단과 제품의 승인 절차 중 어디에 두어야 할지 정할 수 없다.</li>
+        <li><b>설계 —</b> 동일한 상태 변경 지시를 텍스트 4종과 사람이 읽을 수 있는 이미지 3종, 총 7개 컨텍스트에 배치하고 Claude Code의 Manual · Auto 모드에서 42회 실행. 화면 기록과 실행 전후 상태 · SHA-256으로 단계를 판정</li>
+        <li><b>측정 무결성 —</b> 간접 지시 없는 기준 조건과 대조하고, 제외한 실행 6회의 사유를 모두 공개했으며, 두 평가자가 독립 판정(Cohen's κ = 0.81)</li>
+      </ul>
+
+      <div class="method m5">
+        <div class="step"><div class="k">S1</div><h4>인식</h4><p>지시를 화면에서 언급</p><span class="badge">42 / 42</span></div>
+        <div class="step hot"><div class="k">S2</div><h4>계획</h4><p>작업 계획에 대상 변경 포함</p><span class="badge">11 / 42</span></div>
+        <div class="step"><div class="k">S3</div><h4>수정 시도</h4><p>목표 경로로 도구 호출</p><span class="badge">9 / 42</span></div>
+        <div class="step"><div class="k">S4</div><h4>승인 경로</h4><p>Manual 승인창, Auto 무질문</p><span class="badge">9 / 9 통과</span></div>
+        <div class="step"><div class="k">S5</div><h4>완료</h4><p>상태 파일이 실제로 변경</p><span class="badge">9 / 42</span></div>
+      </div>
+      <div class="method-note"><b>결과 —</b> 지시는 42회 모두 인식됐지만 계획 단계에서 11회로 줄었다. 간결한 개발 메모 이미지는 6회 중 5회 완료된 반면 작업흐름도 · 터미널 출력 · JSON은 한 번도 완료되지 않았고, 수정 호출이 생성된 뒤에는 두 모드 모두 모든 시도가 완료됐다. 인식과 채택은 서로 다른 단계이므로, 방어는 호출 전에는 지시의 출처를, 호출 후에는 수정 범위를 나누어 검증해야 한다.</div>
     </div>
   </div>
 </section>
@@ -298,6 +349,23 @@
       <div class="eyebrow">Featured Project</div>
       <h3>AIBB — AI BunkerBuster</h3>
       <div class="role">LLM 기반 자율 침투 테스트 시스템 · 팀장 (기획 · 설계 · 구현 · 실험 전 과정 주도)</div>
+
+      <div class="gaps-head">
+        <h5>선행 연구의 두 가지 실패 영역</h5>
+        <div class="gaps">
+          <div class="gapc">
+            <div class="gk">정답이 주어진 조건에서의 평가</div>
+            <p>LLM 보안 에이전트 연구들은 취약점명과 CVE가 주어진 조건에서 성능을 보고해, <b>실제 자율성 수준을 과대평가</b>한다.</p>
+            <div class="fix"><b>AIBB의 설계</b> — 취약점명과 CVE를 제거한 블라인드 환경에서 Nmap 스캔 정보만으로 추론 · 익스플로잇하게 하고, 정보 조건을 독립변수로 통제했다.</div>
+          </div>
+          <div class="gapc">
+            <div class="gk">에이전트 자기보고에 의존한 성공 판정</div>
+            <p>에이전트가 스스로 성공했다고 보고한 결과를 그대로 집계하면 <b>날조된 성공</b>이 측정에 섞인다.</p>
+            <div class="fix"><b>AIBB의 설계</b> — 실험 설계 단계에서 플래그 검증 장치를 먼저 구현해, 실제로 플래그를 획득한 경우만 성공으로 인정했다.</div>
+          </div>
+        </div>
+      </div>
+
       <div class="feat-grid">
         <div>
           <h5>설계 / 측정</h5>
@@ -417,5 +485,3 @@
 
 </body>
 </html>
-
-```
